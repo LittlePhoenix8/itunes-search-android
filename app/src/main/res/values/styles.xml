@@ -8,4 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ArtistType">
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ArtistName">
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ArtistGenre">
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <color name="dark_text">#000000</color>
 </resources>
