@@ -5,7 +5,7 @@ import cl.littlephoenix.itunessearch.models.response.ArtistResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
-import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ItunesNetwork
 {
@@ -15,7 +15,6 @@ interface ItunesNetwork
     }
 
     @Headers("Content-Type:application/json")
-    @GET("search?term={artist}&entity=musicArtist")
-    fun getArtistByName(@Path("artist") id:String): Call<BaseResponse<ArtistResponse>>
-
+    @GET("search")
+    fun getArtistByName(@Query("term") id:String, @Query("entity") entity: String): Call<BaseResponse<ArtistResponse>>
 }
