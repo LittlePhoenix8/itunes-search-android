@@ -35,9 +35,8 @@ class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
     {
         menuInflater.inflate(R.menu.search_menu, menu)
         val searchItem = menu?.findItem(R.id.itemSearch)
-        val searchView = searchItem?.actionView as SearchView
-        searchView.setOnQueryTextListener(this)
-
+        //val searchView = searchItem?.actionView as SearchView
+        //searchView.setOnQueryTextListener(this)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -52,5 +51,4 @@ class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
         //TODO here
         return false
     }
-
 }

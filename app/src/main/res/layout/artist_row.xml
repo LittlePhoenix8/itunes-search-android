@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/CardView.Light"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/ArtistType"
+            android:id="@+id/txtType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="Artist"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgArrow"/>
+
+        <TextView
+            style="@style/ArtistName"
+            android:id="@+id/txtName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Nightwish"
+            app:layout_constraintTop_toBottomOf="@+id/txtType"
+            app:layout_constraintStart_toStartOf="@+id/txtType"
+            app:layout_constraintEnd_toEndOf="@+id/txtType"/>
+
+        <TextView
+            android:id="@+id/txtGenre"
+            style="@style/ArtistType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Metal"
+            app:layout_constraintTop_toBottomOf="@+id/txtName"
+            app:layout_constraintStart_toStartOf="@+id/txtType"
+            app:layout_constraintEnd_toEndOf="@+id/txtType"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageView
+            android:id="@+id/imgArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/baseline_chevron_right_white_36"
+            android:tint="@color/colorAccent"
+            android:contentDescription="@string/arrow_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>
