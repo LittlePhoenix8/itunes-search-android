@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import cl.littlephoenix.itunessearch.R
+import cl.littlephoenix.itunessearch.interfaces.OnArtistSelectListener
 import cl.littlephoenix.itunessearch.models.response.ArtistResponse
 
-class ArtistAdapter(private val artists: Array<ArtistResponse>): RecyclerView.Adapter<ArtistAdapter.ArtistHolder>()
+class ArtistAdapter(private val artists: ArrayList<ArtistResponse>, private val onArtistSelectListener: OnArtistSelectListener): RecyclerView.Adapter<ArtistAdapter.ArtistHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistHolder
     {
@@ -22,7 +23,9 @@ class ArtistAdapter(private val artists: Array<ArtistResponse>): RecyclerView.Ad
         holder.txtType.text = artists[position].artistType
         holder.txtName.text = artists[position].artistName
         holder.txtGenre.text = artists[position].primaryGenreName
-        //TODO on click listener
+        holder.itemView.setOnClickListener {
+            onArtistSelectListener.onArtistSelectedAt(position)
+        }
     }
 
     inner class ArtistHolder(view: View): RecyclerView.ViewHolder(view)

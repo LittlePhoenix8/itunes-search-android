@@ -5,7 +5,7 @@ import cl.littlephoenix.itunessearch.network.ItunesNetwork
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class BaseViewModel: ViewModel()
+open class BaseViewModel: ViewModel()
 {
     fun getRetrofit(): ItunesNetwork
     {
