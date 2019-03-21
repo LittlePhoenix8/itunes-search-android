@@ -1,4 +1,4 @@
-package cl.littlephoenix.itunessearch.fragments
+package cl.littlephoenix.itunessearch.fragments.artist
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData

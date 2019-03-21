@@ -9,7 +9,7 @@ import androidx.navigation.ui.setupWithNavController
 import cl.littlephoenix.itunessearch.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.v7.widget.SearchView
-import cl.littlephoenix.itunessearch.fragments.ArtistFragment
+import cl.littlephoenix.itunessearch.fragments.artist.ArtistFragment
 import cl.littlephoenix.itunessearch.interfaces.OnSearchListener
 
 class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener

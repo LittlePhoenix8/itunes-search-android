@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/artistFragment"
-        android:name="cl.littlephoenix.itunessearch.fragments.ArtistFragment"
+        android:name="cl.littlephoenix.itunessearch.fragments.artist.ArtistFragment"
         android:label="fragment_artist"
         tools:layout="@layout/fragment_artist">
     </fragment>

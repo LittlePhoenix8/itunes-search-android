@@ -1,4 +1,4 @@
-package cl.littlephoenix.itunessearch.fragments
+package cl.littlephoenix.itunessearch.fragments.artist
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
