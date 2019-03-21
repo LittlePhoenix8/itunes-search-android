@@ -9,10 +9,13 @@ import androidx.navigation.ui.setupWithNavController
 import cl.littlephoenix.itunessearch.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.v7.widget.SearchView
-import android.util.Log
+import cl.littlephoenix.itunessearch.fragments.ArtistFragment
+import cl.littlephoenix.itunessearch.interfaces.OnSearchListener
 
 class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
 {
+    private var onSearchListener: OnSearchListener? = null
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -41,16 +44,26 @@ class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
         return super.onCreateOptionsMenu(menu)
     }
 
-    //OnQueryTextListener
+    fun addOnSearchListener(listener: OnSearchListener)
+    {
+        this.onSearchListener = listener
+    }
+
+    //TODO OnQueryTextListener
     override fun onQueryTextSubmit(query: String?): Boolean
     {
+        val fragment = supportFragmentManager?.findFragmentById(R.id.artistFragment)
+        if(fragment is ArtistFragment)
+        {
+            fragment.onSearchEnter(query)
+        }
+
+        this.onSearchListener?.onSearchEnter(query)
         return false
     }
 
     override fun onQueryTextChange(query: String?): Boolean
     {
-        Log.e("onQueryTextChange", "query -> $query")
-        //TODO here
         return false
     }
 }
