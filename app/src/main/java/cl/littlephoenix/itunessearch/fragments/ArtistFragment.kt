@@ -12,13 +12,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 
 import cl.littlephoenix.itunessearch.R
+import cl.littlephoenix.itunessearch.activities.MainActivity
 import cl.littlephoenix.itunessearch.adapters.ArtistAdapter
 import cl.littlephoenix.itunessearch.interfaces.OnArtistSelectListener
+import cl.littlephoenix.itunessearch.interfaces.OnSearchListener
 import cl.littlephoenix.itunessearch.models.BaseResponse
 import cl.littlephoenix.itunessearch.models.response.ArtistResponse
+import cl.littlephoenix.itunessearch.persistence.SearchSharedPreferences
 import kotlinx.android.synthetic.main.fragment_artist.*
 
-class ArtistFragment : Fragment(), OnArtistSelectListener
+class ArtistFragment : Fragment(), OnArtistSelectListener, OnSearchListener
 {
     private lateinit var viewModel: ArtistViewModel
     private val artist = ArrayList<ArtistResponse>()
@@ -40,11 +43,22 @@ class ArtistFragment : Fragment(), OnArtistSelectListener
         viewModel.getArtists().observe(this, ArtistObserverResponse())
         viewModel.getError().observe(this, ErrorObserverResponse())
 
+        activity?.let {
+            if(it is MainActivity)
+            {
+                it.addOnSearchListener(this)
+            }
+        }
+
         recyclerArtists.layoutManager = LinearLayoutManager(context)
         recyclerArtists.adapter = ArtistAdapter(artist, this)
 
         showProgressBar()
-        viewModel.searchArtist("a")
+        SearchSharedPreferences(context!!).getLastSearch()?.let {
+            viewModel.searchArtist(it)
+        }?: run {
+            viewModel.searchArtist("a")
+        }
     }
 
     private fun showProgressBar()
@@ -65,6 +79,15 @@ class ArtistFragment : Fragment(), OnArtistSelectListener
     override fun onArtistSelectedAt(position: Int)
     {
         //TODO artist detail
+    }
+
+    override fun onSearchEnter(query: String?)
+    {
+        query?.let {
+            SearchSharedPreferences(context!!).setLastSearch(it)
+            showProgressBar()
+            viewModel.searchArtist(it)
+        }
     }
 
     inner class ArtistObserverResponse: Observer<BaseResponse<ArtistResponse>>

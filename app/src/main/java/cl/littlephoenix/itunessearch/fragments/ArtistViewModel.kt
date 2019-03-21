@@ -26,7 +26,7 @@ class ArtistViewModel: BaseViewModel()
 
     fun searchArtist(query: String)
     {
-        getRetrofit().getArtistByName(query).enqueue(ArtistData())
+        getRetrofit().getArtistByName(query, "musicArtist").enqueue(ArtistData())
     }
 
     private inner class ArtistData: Callback<BaseResponse<ArtistResponse>>

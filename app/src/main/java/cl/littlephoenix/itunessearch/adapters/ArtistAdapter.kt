@@ -9,7 +9,8 @@ import cl.littlephoenix.itunessearch.R
 import cl.littlephoenix.itunessearch.interfaces.OnArtistSelectListener
 import cl.littlephoenix.itunessearch.models.response.ArtistResponse
 
-class ArtistAdapter(private val artists: ArrayList<ArtistResponse>, private val onArtistSelectListener: OnArtistSelectListener): RecyclerView.Adapter<ArtistAdapter.ArtistHolder>()
+class ArtistAdapter(private val artists: ArrayList<ArtistResponse>,
+                    private val onArtistSelectListener: OnArtistSelectListener): RecyclerView.Adapter<ArtistAdapter.ArtistHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistHolder
     {
