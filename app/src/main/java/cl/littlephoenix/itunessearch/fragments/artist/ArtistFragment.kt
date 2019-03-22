@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.Navigation
 
 import cl.littlephoenix.itunessearch.R
 import cl.littlephoenix.itunessearch.activities.MainActivity
@@ -78,7 +79,13 @@ class ArtistFragment : Fragment(), OnArtistSelectListener, OnSearchListener
 
     override fun onArtistSelectedAt(position: Int)
     {
-        //TODO artist detail
+        view?.let {
+            val bundle = Bundle()
+            bundle.putString("artist_name", artist[position].artistName)
+            bundle.putString("id_artist", artist[position].amgArtistId.toString())
+            val navController = Navigation.findNavController(it)
+            navController.navigate(R.id.artist_to_detail, bundle)
+        }
     }
 
     override fun onSearchEnter(query: String?)

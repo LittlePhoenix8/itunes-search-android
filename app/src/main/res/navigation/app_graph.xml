@@ -10,6 +10,23 @@
         android:name="cl.littlephoenix.itunessearch.fragments.artist.ArtistFragment"
         android:label="fragment_artist"
         tools:layout="@layout/fragment_artist">
+        <action
+            android:id="@+id/artist_to_detail"
+            app:destination="@+id/detailFragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="cl.littlephoenix.itunessearch.fragments.detail.DetailFragment"
+        android:label="{artist_name}"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="artist_name"
+            app:argType="string"/>
+        <argument
+            android:name="id_artist"
+            app:argType="string"/>
     </fragment>
 
 </navigation>
