@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import cl.littlephoenix.itunessearch.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.v7.widget.SearchView
+import cl.littlephoenix.itunessearch.helpers.DataHelper
 import cl.littlephoenix.itunessearch.helpers.ViewModelController
 
 class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
@@ -55,7 +56,7 @@ class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
     override fun onQueryTextSubmit(query: String?): Boolean
     {
         query?.let {
-            viewModel.onQuerySearch(query)
+            viewModel.onQuerySearch(DataHelper().parseSearchString(query))
         }
         return false
     }

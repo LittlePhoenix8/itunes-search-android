@@ -44,7 +44,7 @@ class DetailFragment : Fragment()
         recyclerDetails.layoutManager = LinearLayoutManager(context)
         recyclerDetails.adapter = DetailAdapter(details)
 
-        showProgressBar()
+        showProgressBar(true)
 
         val idArtist = arguments?.getString("id_artist")
         idArtist?.let {
@@ -55,14 +55,16 @@ class DetailFragment : Fragment()
         }
     }
 
-    private fun showProgressBar()
+    private fun showProgressBar(show: Boolean)
     {
-        progressBar.visibility = View.VISIBLE
-    }
-
-    private fun hideProgressBar()
-    {
-        progressBar.visibility = View.GONE
+        if(show)
+        {
+            progressBar.visibility = View.VISIBLE
+        }
+        else
+        {
+            progressBar.visibility = View.GONE
+        }
     }
 
     private fun showToastMessage(message: String)
@@ -83,7 +85,7 @@ class DetailFragment : Fragment()
         override fun onChanged(t: BaseResponse<DetailResponse>?)
         {
             ViewModelStores.of(this@DetailFragment).clear()
-            hideProgressBar()
+            showProgressBar(false)
             t?.results?.let {
                 details.clear()
                 details.addAll(DataHelper().parseDetailData(it))
@@ -97,7 +99,7 @@ class DetailFragment : Fragment()
         override fun onChanged(t: String?)
         {
             ViewModelStores.of(this@DetailFragment).clear()
-            hideProgressBar()
+            showProgressBar(false)
             t?.let {
                 showToastMessage(it)
             }

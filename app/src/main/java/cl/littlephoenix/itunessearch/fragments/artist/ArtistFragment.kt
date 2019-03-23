@@ -16,7 +16,6 @@ import cl.littlephoenix.itunessearch.R
 import cl.littlephoenix.itunessearch.activities.MainActivity
 import cl.littlephoenix.itunessearch.adapters.ArtistAdapter
 import cl.littlephoenix.itunessearch.interfaces.OnArtistSelectListener
-import cl.littlephoenix.itunessearch.interfaces.OnSearchListener
 import cl.littlephoenix.itunessearch.models.BaseResponse
 import cl.littlephoenix.itunessearch.models.response.ArtistResponse
 import cl.littlephoenix.itunessearch.persistence.SearchSharedPreferences
@@ -56,7 +55,6 @@ class ArtistFragment : Fragment(), OnArtistSelectListener
         recyclerArtists.layoutManager = LinearLayoutManager(context)
         recyclerArtists.adapter = ArtistAdapter(artist, this)
 
-        showProgressBar()
         SearchSharedPreferences(context!!).getLastSearch()?.let {
             viewModel.searchArtist(it)
         }?: run {
@@ -64,14 +62,16 @@ class ArtistFragment : Fragment(), OnArtistSelectListener
         }
     }
 
-    private fun showProgressBar()
+    private fun showProgressBar(show: Boolean)
     {
-        progressBar.visibility = View.VISIBLE
-    }
-
-    private fun hideProgressBar()
-    {
-        progressBar.visibility = View.GONE
+        if(show)
+        {
+            progressBar.visibility = View.VISIBLE
+        }
+        else
+        {
+            progressBar.visibility = View.GONE
+        }
     }
 
     private fun showToastMessage(message: String)
@@ -95,7 +95,7 @@ class ArtistFragment : Fragment(), OnArtistSelectListener
         override fun onChanged(t: BaseResponse<ArtistResponse>?)
         {
             ViewModelStores.of(this@ArtistFragment).clear()
-            hideProgressBar()
+            showProgressBar(false)
             t?.results?.let {
                 artist.clear()
                 artist.addAll(it)
@@ -109,7 +109,7 @@ class ArtistFragment : Fragment(), OnArtistSelectListener
         override fun onChanged(t: String?)
         {
             ViewModelStores.of(this@ArtistFragment).clear()
-            hideProgressBar()
+            showProgressBar(false)
             t?.let {
                 showToastMessage(it)
             }
@@ -133,14 +133,7 @@ class ArtistFragment : Fragment(), OnArtistSelectListener
         {
             ViewModelStores.of(this@ArtistFragment).clear()
             t?.let {
-                if(it)
-                {
-                    showProgressBar()
-                }
-                else
-                {
-                    hideProgressBar()
-                }
+                showProgressBar(it)
             }
         }
     }
