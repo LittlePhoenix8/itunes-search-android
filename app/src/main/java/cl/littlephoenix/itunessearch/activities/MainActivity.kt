@@ -1,5 +1,6 @@
 package cl.littlephoenix.itunessearch.activities
 
+import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -9,12 +10,14 @@ import androidx.navigation.ui.setupWithNavController
 import cl.littlephoenix.itunessearch.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.v7.widget.SearchView
-import cl.littlephoenix.itunessearch.fragments.ArtistFragment
-import cl.littlephoenix.itunessearch.interfaces.OnSearchListener
+import cl.littlephoenix.itunessearch.customviews.QueryText
+import cl.littlephoenix.itunessearch.helpers.DataHelper
+import cl.littlephoenix.itunessearch.helpers.ViewModelController
+import cl.littlephoenix.itunessearch.interfaces.OnQueryTextListenerInstance
 
-class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
+class MainActivity: AppCompatActivity(), OnQueryTextListenerInstance
 {
-    private var onSearchListener: OnSearchListener? = null
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -25,6 +28,8 @@ class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
 
     private fun initComponents()
     {
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+
         //set support bar
         setSupportActionBar(toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
@@ -40,30 +45,20 @@ class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
         menuInflater.inflate(R.menu.search_menu, menu)
         val searchItem = menu?.findItem(R.id.itemSearch)
         val searchView = searchItem?.actionView as SearchView
-        searchView.setOnQueryTextListener(this)
+        QueryText().registerSearchView(searchView).setCallBack(this)
         return super.onCreateOptionsMenu(menu)
     }
 
-    fun addOnSearchListener(listener: OnSearchListener)
+    fun getController(): ViewModelController
     {
-        this.onSearchListener = listener
+        return viewModel.controller
     }
 
-    //TODO OnQueryTextListener
     override fun onQueryTextSubmit(query: String?): Boolean
     {
-        val fragment = supportFragmentManager?.findFragmentById(R.id.artistFragment)
-        if(fragment is ArtistFragment)
-        {
-            fragment.onSearchEnter(query)
+        query?.let {
+            viewModel.onQuerySearch(DataHelper().parseSearchString(query))
         }
-
-        this.onSearchListener?.onSearchEnter(query)
-        return false
-    }
-
-    override fun onQueryTextChange(query: String?): Boolean
-    {
         return false
     }
 }

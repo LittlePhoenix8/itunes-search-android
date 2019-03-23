@@ -1,20 +1,20 @@
-package cl.littlephoenix.itunessearch.fragments
+package cl.littlephoenix.itunessearch.fragments.detail
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import cl.littlephoenix.itunessearch.base.BaseViewModel
 import cl.littlephoenix.itunessearch.models.BaseResponse
-import cl.littlephoenix.itunessearch.models.response.ArtistResponse
+import cl.littlephoenix.itunessearch.models.response.DetailResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ArtistViewModel: BaseViewModel()
+class DetailViewModel: BaseViewModel()
 {
-    private val artistResponse = MutableLiveData<BaseResponse<ArtistResponse>>()
+    private val artistResponse = MutableLiveData<BaseResponse<DetailResponse>>()
     private val errorResponse = MutableLiveData<String>()
 
-    fun getArtists(): LiveData<BaseResponse<ArtistResponse>>
+    fun getArtistDetail(): LiveData<BaseResponse<DetailResponse>>
     {
         return artistResponse
     }
@@ -24,15 +24,14 @@ class ArtistViewModel: BaseViewModel()
         return errorResponse
     }
 
-    fun searchArtist(query: String)
+    fun getArtistDetail(idArtist: String)
     {
-        getRetrofit().getArtistByName(query, "musicArtist").enqueue(ArtistData())
+        getRetrofit().getArtistDetail(idArtist, "album", "5").enqueue(ArtistDetailResponse())
     }
 
-    private inner class ArtistData: Callback<BaseResponse<ArtistResponse>>
+    inner class ArtistDetailResponse: Callback<BaseResponse<DetailResponse>>
     {
-        override fun onResponse(call: Call<BaseResponse<ArtistResponse>>,
-                                response: Response<BaseResponse<ArtistResponse>>)
+        override fun onResponse(call: Call<BaseResponse<DetailResponse>>, response: Response<BaseResponse<DetailResponse>>)
         {
             if(response.isSuccessful && response.body() != null)
             {
@@ -44,7 +43,7 @@ class ArtistViewModel: BaseViewModel()
             }
         }
 
-        override fun onFailure(call: Call<BaseResponse<ArtistResponse>>, t: Throwable)
+        override fun onFailure(call: Call<BaseResponse<DetailResponse>>, t: Throwable)
         {
             errorResponse.postValue(t.message)
         }
