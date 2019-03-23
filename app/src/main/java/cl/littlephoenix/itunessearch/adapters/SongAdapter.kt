@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import cl.littlephoenix.itunessearch.R
+import cl.littlephoenix.itunessearch.helpers.DataHelper
 import cl.littlephoenix.itunessearch.interfaces.OnSongSelectListener
 import cl.littlephoenix.itunessearch.models.response.SongsResponse
 import com.bumptech.glide.Glide
@@ -26,14 +27,8 @@ class SongAdapter(private val songs: ArrayList<SongsResponse>, private val onSon
         Glide.with(holder.imgCover.context).load(songs[position].artworkUrl60).centerCrop().into(holder.imgCover)
         holder.txtSongName.text = songs[position].trackName
         holder.txtAlbumName.text = songs[position].collectionName
-        if(songs[position].isPlaying)
-        {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.gray_selected))
-        }
-        else
-        {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, android.R.color.white))
-        }
+        holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,
+            DataHelper().getSongBackgroundColor(songs[position].isPlaying)))
         holder.itemView.setOnClickListener {
             onSongSelectListener.playSongAt(position)
         }

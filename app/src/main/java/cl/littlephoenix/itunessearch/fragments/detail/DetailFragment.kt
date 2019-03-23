@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.OrientationHelper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -28,6 +27,8 @@ import cl.littlephoenix.itunessearch.models.response.DetailResponse
 import cl.littlephoenix.itunessearch.models.response.SongsResponse
 import kotlinx.android.synthetic.main.fragment_detail.*
 import java.lang.Exception
+import android.media.AudioAttributes
+import android.os.Build
 
 class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletionListener,
                        View.OnClickListener
@@ -67,10 +68,21 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
         mediaPlayer?.release()
     }
 
+    @Suppress("DEPRECATION")
     private fun initComponents()
     {
         mediaPlayer = MediaPlayer()
-        mediaPlayer?.setAudioStreamType(AudioManager.STREAM_MUSIC)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            val aa = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build()
+            mediaPlayer?.setAudioAttributes(aa)
+        }
+        else
+        {
+            mediaPlayer?.setAudioStreamType(AudioManager.STREAM_MUSIC)
+        }
 
         viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
         viewModel.getArtistDetail().observe(this, ArtistObserverResponse())
@@ -89,11 +101,10 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
         btnNext.setOnClickListener(this)
         btnStop.setOnClickListener(this)
 
-        showProgressBar(true)
-        showPlayer(false)
-
         val idArtist = arguments?.getString("id_artist")
         idArtist?.let {
+            showProgressBar(true)
+            showPlayer(false)
             viewModel.getArtistDetail(it)
             viewModel.getArtistSongs(it)
         }?: run {
@@ -140,11 +151,8 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
         }
         songs[newPosition].isPlaying = true
         recyclerSongs.adapter?.notifyDataSetChanged()
-    }
 
-    private fun setArrows(position: Int)
-    {
-        when(position)
+        when(newPosition)
         {
             0 ->
             {
@@ -168,7 +176,6 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
     {
         btnPlay.setImageResource(R.drawable.baseline_pause_black_36)
         showProgressBar(false)
-        //TODO progress bar
     }
 
     private fun setPause()
@@ -207,7 +214,6 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
         setSelected(currentPlaying, position)
         showProgressBar(true)
         showPlayer(true)
-        setArrows(position)
         mediaPlayer?.let {
             if(!it.isPlaying)
             {
@@ -240,7 +246,6 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
         {
             setSelected(currentPlaying, currentPlaying + 1)
             currentPlaying++
-            setArrows(currentPlaying)
             prepareMediaWith(songs[currentPlaying].previewUrl)
         }
         else
@@ -258,16 +263,13 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
                 mediaPlayer?.let {
                     if(currentPlaying > 0)
                     {
-                        //val newPosition = currentPlaying - 1
-                        setSelected(currentPlaying, currentPlaying - 1)
-                        currentPlaying--
-                        setArrows(currentPlaying)
-
                         if(it.isPlaying)
                         {
                             it.pause()
-                            prepareMediaWith(songs[currentPlaying].previewUrl)
                         }
+                        setSelected(currentPlaying, currentPlaying - 1)
+                        currentPlaying--
+                        prepareMediaWith(songs[currentPlaying].previewUrl)
                     }
                 }
             }
@@ -291,15 +293,13 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
                 mediaPlayer?.let {
                     if(currentPlaying < songs.size - 1)
                     {
-                        setSelected(currentPlaying, currentPlaying + 1)
-                        currentPlaying++
-                        setArrows(currentPlaying)
-
                         if(it.isPlaying)
                         {
                             it.pause()
-                            prepareMediaWith(songs[currentPlaying].previewUrl)
                         }
+                        setSelected(currentPlaying, currentPlaying + 1)
+                        currentPlaying++
+                        prepareMediaWith(songs[currentPlaying].previewUrl)
                     }
                 }
             }

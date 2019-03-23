@@ -10,7 +10,7 @@ class SearchSharedPreferences(context: Context)
 
     companion object
     {
-        const val LAST_SEARCH = "login"
+        const val LAST_SEARCH = "last_search"
     }
 
     fun setLastSearch(search: String)
