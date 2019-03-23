@@ -4,4 +4,7 @@
     <string name="arrow_image">Arrow Image</string>
     <string name="error_id">Error getting artist\'s Id</string>
     <string name="album_cover">Album cover</string>
+    <string name="albums">Albums</string>
+    <string name="play_button">Play button</string>
+    <string name="songs">Songs</string>
 </resources>
