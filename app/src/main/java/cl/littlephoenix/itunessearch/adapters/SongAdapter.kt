@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import cl.littlephoenix.itunessearch.R
@@ -26,7 +25,7 @@ class SongAdapter(private val songs: ArrayList<SongsResponse>, private val onSon
         Glide.with(holder.imgCover.context).load(songs[position].artworkUrl60).centerCrop().into(holder.imgCover)
         holder.txtSongName.text = songs[position].trackName
         holder.txtAlbumName.text = songs[position].collectionName
-        holder.imgBtnPlay.setOnClickListener {
+        holder.itemView.setOnClickListener {
             onSongSelectListener.playSongAt(position)
         }
     }
@@ -36,6 +35,5 @@ class SongAdapter(private val songs: ArrayList<SongsResponse>, private val onSon
         val imgCover = view.findViewById<ImageView>(R.id.imgCover)!!
         val txtSongName = view.findViewById<TextView>(R.id.txtSongName)!!
         val txtAlbumName = view.findViewById<TextView>(R.id.txtAlbumName)!!
-        val imgBtnPlay = view.findViewById<ImageButton>(R.id.imgBtnPlay)!!
     }
 }

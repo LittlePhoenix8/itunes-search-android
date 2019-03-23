@@ -37,5 +37,10 @@
         <item name="android:lines">1</item>
     </style>
 
+    <style name="MediaButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:tint">@android:color/white</item>
+    </style>
+
     <color name="dark_text">#000000</color>
 </resources>

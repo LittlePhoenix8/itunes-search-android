@@ -3,7 +3,6 @@ package cl.littlephoenix.itunessearch.fragments.detail
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.arch.lifecycle.ViewModelStores
-import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -28,7 +27,8 @@ import cl.littlephoenix.itunessearch.models.response.SongsResponse
 import kotlinx.android.synthetic.main.fragment_detail.*
 import java.lang.Exception
 
-class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletionListener
+class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletionListener,
+                       View.OnClickListener
 {
     private lateinit var viewModel: DetailViewModel
     private var mediaPlayer: MediaPlayer? = null
@@ -80,8 +80,15 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
 
         recyclerSongs.layoutManager = LinearLayoutManager(context)
         recyclerSongs.adapter = SongAdapter(songs, this)
+        //TODO divider
+
+        btnPreview.setOnClickListener(this)
+        btnPlay.setOnClickListener(this)
+        btnNext.setOnClickListener(this)
+        btnStop.setOnClickListener(this)
 
         showProgressBar(true)
+        showPlayer(false)
 
         val idArtist = arguments?.getString("id_artist")
         idArtist?.let {
@@ -105,9 +112,56 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
         }
     }
 
+    private fun showPlayer(show: Boolean)
+    {
+        if(show)
+        {
+            playLayout.visibility = View.VISIBLE
+        }
+        else
+        {
+            playLayout.visibility = View.GONE
+        }
+    }
+
+    private fun setArrows(position: Int)
+    {
+        when(position)
+        {
+            0 ->
+            {
+                btnPreview.visibility = View.INVISIBLE
+                btnNext.visibility = View.VISIBLE
+            }
+            songs.size - 1 ->
+            {
+                btnPreview.visibility = View.VISIBLE
+                btnNext.visibility = View.INVISIBLE
+            }
+            else ->
+            {
+                btnPreview.visibility = View.VISIBLE
+                btnNext.visibility = View.VISIBLE
+            }
+        }
+    }
+
     private fun showToastMessage(message: String)
     {
         Toast.makeText(context!!, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setPlay()
+    {
+        btnPlay.setImageResource(R.drawable.baseline_pause_black_36)
+        showProgressBar(false)
+        //TODO progress bar
+        //TODO selected background
+    }
+
+    private fun setPause()
+    {
+        btnPlay.setImageResource(R.drawable.baseline_play_arrow_white_36)
     }
 
     private fun navigateUp()
@@ -127,40 +181,40 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
             mediaPlayer?.prepare()
             mediaPlayer?.start()
 
-            showProgressBar(false)
+            setPlay()
             mediaPlayer?.setOnCompletionListener(this)
         }
         catch(e: Exception)
         {
             e.printStackTrace()
-            //showToastMessage(getString(R.string.error_play))
         }
     }
 
     override fun playSongAt(position: Int)
     {
         showProgressBar(true)
+        showPlayer(true)
+        setArrows(position)
         mediaPlayer?.let {
             if(!it.isPlaying)
             {
-                //TODO play
                 currentPlaying = position
-                prepareMediaWith(songs[position].previewUrl)
+                prepareMediaWith(songs[currentPlaying].previewUrl)
             }
             else
             {
                 if(currentPlaying == position)
                 {
-                    //TODO stop
+                    showProgressBar(false)
+                    setPause()
                     it.pause()
-                    currentPlaying = -1
                 }
                 else
                 {
-                    //TODO stop & change song
+                    setPause()
                     it.stop()
                     currentPlaying = position
-                    prepareMediaWith(songs[position].previewUrl)
+                    prepareMediaWith(songs[currentPlaying].previewUrl)
                 }
             }
         }
@@ -168,7 +222,78 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
 
     override fun onCompletion(mediaPlayer: MediaPlayer?)
     {
-        //TODO play next?
+        showPlayer(false)
+        //TODO next?
+    }
+
+    override fun onClick(v: View?)
+    {
+        when(v?.id)
+        {
+            R.id.btnPreview ->
+            {
+                mediaPlayer?.let {
+                    if(currentPlaying > 0)
+                    {
+                        if(it.isPlaying)
+                        {
+                            currentPlaying--
+                            it.pause()
+                            setArrows(currentPlaying)
+                            prepareMediaWith(songs[currentPlaying].previewUrl)
+                        }
+                    }
+                    else
+                    {
+                        //TODO change selected
+                    }
+                }
+            }
+            R.id.btnPlay ->
+            {
+                mediaPlayer?.let {
+                    if(it.isPlaying && currentPlaying >= 0)
+                    {
+                        setPause()
+                        it.pause()
+                    }
+                    else if(!it.isPlaying && currentPlaying >= 0)
+                    {
+                        setPlay()
+                        it.start()
+                    }
+                }
+            }
+            R.id.btnNext ->
+            {
+                mediaPlayer?.let {
+                    if(currentPlaying < songs.size - 1)
+                    {
+                        if(it.isPlaying)
+                        {
+                            currentPlaying++
+                            it.pause()
+                            setArrows(currentPlaying)
+                            prepareMediaWith(songs[currentPlaying].previewUrl)
+                        }
+                        else
+                        {
+                            //TODO change selected
+                        }
+                    }
+                }
+            }
+            R.id.btnStop ->
+            {
+                mediaPlayer?.let {
+                    if(it.isPlaying)
+                    {
+                        setPause()
+                        it.stop()
+                    }
+                }
+            }
+        }
     }
 
     inner class ArtistObserverResponse: Observer<BaseResponse<DetailResponse>>
