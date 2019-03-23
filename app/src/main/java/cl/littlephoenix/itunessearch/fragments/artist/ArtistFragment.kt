@@ -22,7 +22,7 @@ import cl.littlephoenix.itunessearch.models.response.ArtistResponse
 import cl.littlephoenix.itunessearch.persistence.SearchSharedPreferences
 import kotlinx.android.synthetic.main.fragment_artist.*
 
-class ArtistFragment : Fragment(), OnArtistSelectListener, OnSearchListener
+class ArtistFragment : Fragment(), OnArtistSelectListener
 {
     private lateinit var viewModel: ArtistViewModel
     private val artist = ArrayList<ArtistResponse>()
@@ -43,11 +43,13 @@ class ArtistFragment : Fragment(), OnArtistSelectListener, OnSearchListener
         viewModel = ViewModelProviders.of(this).get(ArtistViewModel::class.java)
         viewModel.getArtists().observe(this, ArtistObserverResponse())
         viewModel.getError().observe(this, ErrorObserverResponse())
+        viewModel.savedQuery().observe(this, QueryObserverResponse())
+        viewModel.showProgress().observe(this, ProgressObserverResponse())
 
         activity?.let {
             if(it is MainActivity)
             {
-                it.addOnSearchListener(this)
+                it.getController().artistViewModel = viewModel
             }
         }
 
@@ -88,15 +90,6 @@ class ArtistFragment : Fragment(), OnArtistSelectListener, OnSearchListener
         }
     }
 
-    override fun onSearchEnter(query: String?)
-    {
-        query?.let {
-            SearchSharedPreferences(context!!).setLastSearch(it)
-            showProgressBar()
-            viewModel.searchArtist(it)
-        }
-    }
-
     inner class ArtistObserverResponse: Observer<BaseResponse<ArtistResponse>>
     {
         override fun onChanged(t: BaseResponse<ArtistResponse>?)
@@ -119,6 +112,35 @@ class ArtistFragment : Fragment(), OnArtistSelectListener, OnSearchListener
             hideProgressBar()
             t?.let {
                 showToastMessage(it)
+            }
+        }
+    }
+
+    inner class QueryObserverResponse: Observer<String>
+    {
+        override fun onChanged(t: String?)
+        {
+            ViewModelStores.of(this@ArtistFragment).clear()
+            t?.let {
+                SearchSharedPreferences(context!!).setLastSearch(it)
+            }
+        }
+    }
+
+    inner class ProgressObserverResponse: Observer<Boolean>
+    {
+        override fun onChanged(t: Boolean?)
+        {
+            ViewModelStores.of(this@ArtistFragment).clear()
+            t?.let {
+                if(it)
+                {
+                    showProgressBar()
+                }
+                else
+                {
+                    hideProgressBar()
+                }
             }
         }
     }

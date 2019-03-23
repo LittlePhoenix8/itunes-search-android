@@ -13,9 +13,9 @@ class SearchSharedPreferences(context: Context)
         const val LAST_SEARCH = "login"
     }
 
-    fun setLastSearch(email: String)
+    fun setLastSearch(search: String)
     {
-        sharedPreferences.edit().putString(LAST_SEARCH, email).apply()
+        sharedPreferences.edit().putString(LAST_SEARCH, search).apply()
     }
 
     fun getLastSearch(): String?
