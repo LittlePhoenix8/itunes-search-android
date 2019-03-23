@@ -21,7 +21,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:text="Artist"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imgArrow"/>
@@ -32,7 +31,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Nightwish"
             app:layout_constraintTop_toBottomOf="@+id/txtType"
             app:layout_constraintStart_toStartOf="@+id/txtType"
             app:layout_constraintEnd_toEndOf="@+id/txtType"/>
@@ -44,7 +42,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="Metal"
             app:layout_constraintTop_toBottomOf="@+id/txtName"
             app:layout_constraintStart_toStartOf="@+id/txtType"
             app:layout_constraintEnd_toEndOf="@+id/txtType"

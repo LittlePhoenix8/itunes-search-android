@@ -9,7 +9,7 @@ import androidx.navigation.ui.setupWithNavController
 import cl.littlephoenix.itunessearch.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.v7.widget.SearchView
-import cl.littlephoenix.itunessearch.fragments.artist.ArtistFragment
+import cl.littlephoenix.itunessearch.helpers.DataHelper
 import cl.littlephoenix.itunessearch.interfaces.OnSearchListener
 
 class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
@@ -52,13 +52,9 @@ class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
     //TODO OnQueryTextListener
     override fun onQueryTextSubmit(query: String?): Boolean
     {
-        val fragment = supportFragmentManager?.findFragmentById(R.id.artistFragment)
-        if(fragment is ArtistFragment)
-        {
-            fragment.onSearchEnter(query)
+        query?.let {
+            this.onSearchListener?.onSearchEnter(DataHelper().parseSearchString(it))
         }
-
-        this.onSearchListener?.onSearchEnter(query)
         return false
     }
 

@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import cl.littlephoenix.itunessearch.R
 import cl.littlephoenix.itunessearch.models.response.DetailResponse
+import com.bumptech.glide.Glide
 
 class DetailAdapter(private val details: ArrayList<DetailResponse>): RecyclerView.Adapter<DetailAdapter.DetailHolder>()
 {
@@ -20,7 +21,7 @@ class DetailAdapter(private val details: ArrayList<DetailResponse>): RecyclerVie
 
     override fun onBindViewHolder(holder: DetailHolder, position: Int)
     {
-        //TODO glide images
+        Glide.with(holder.imgCover.context).load(details[position].artworkUrl100).centerCrop().into(holder.imgCover)
         holder.txtName.text = details[position].collectionName
         holder.txtCopyRight.text = details[position].copyright
         holder.txtGenre.text = details[position].primaryGenreName

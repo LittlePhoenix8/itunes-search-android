@@ -9,4 +9,9 @@ class DataHelper
         val list = details.filter { it.wrapperType.equals("collection", true) }
         return list.toTypedArray()
     }
+
+    fun parseSearchString(query: String): String
+    {
+        return query.replace(" ", "+", true)
+    }
 }
