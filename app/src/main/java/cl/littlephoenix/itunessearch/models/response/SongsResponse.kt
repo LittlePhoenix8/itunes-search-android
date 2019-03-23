@@ -13,4 +13,5 @@ class SongsResponse(val wrapperType: String,
                     val trackTimeMillis: Long,
                     val country: String,
                     val primaryGenreName: String,
-                    val isStreamable: Boolean)
+                    val isStreamable: Boolean,
+                    var isPlaying: Boolean)
