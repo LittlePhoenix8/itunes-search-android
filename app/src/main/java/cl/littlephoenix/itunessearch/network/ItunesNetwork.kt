@@ -3,6 +3,7 @@ package cl.littlephoenix.itunessearch.network
 import cl.littlephoenix.itunessearch.models.BaseResponse
 import cl.littlephoenix.itunessearch.models.response.ArtistResponse
 import cl.littlephoenix.itunessearch.models.response.DetailResponse
+import cl.littlephoenix.itunessearch.models.response.SongsResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -24,4 +25,10 @@ interface ItunesNetwork
     fun getArtistDetail(@Query("amgArtistId") amgArtistId:String,
                         @Query("entity") entity: String,
                         @Query("limit") limit: String): Call<BaseResponse<DetailResponse>>
+
+    @Headers("Content-Type:application/json")
+    @GET("lookup")
+    fun getArtistSongs(@Query("amgArtistId") amgArtistId:String,
+                        @Query("entity") entity: String,
+                        @Query("limit") limit: String): Call<BaseResponse<SongsResponse>>
 }

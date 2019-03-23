@@ -39,8 +39,8 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
+            style="@style/ArtistGenre"
             android:id="@+id/txtGenre"
-            style="@style/ArtistType"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

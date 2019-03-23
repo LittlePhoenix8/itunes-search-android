@@ -24,5 +24,23 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="SongsName">
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SongsAlbum">
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="MediaButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:tint">@android:color/white</item>
+    </style>
+
     <color name="dark_text">#000000</color>
 </resources>
