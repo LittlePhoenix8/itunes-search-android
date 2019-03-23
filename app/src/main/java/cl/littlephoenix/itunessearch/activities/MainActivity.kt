@@ -10,10 +10,12 @@ import androidx.navigation.ui.setupWithNavController
 import cl.littlephoenix.itunessearch.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.v7.widget.SearchView
+import cl.littlephoenix.itunessearch.customviews.QueryText
 import cl.littlephoenix.itunessearch.helpers.DataHelper
 import cl.littlephoenix.itunessearch.helpers.ViewModelController
+import cl.littlephoenix.itunessearch.interfaces.OnQueryTextListenerInstance
 
-class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
+class MainActivity: AppCompatActivity(), OnQueryTextListenerInstance
 {
     private lateinit var viewModel: MainViewModel
 
@@ -43,7 +45,7 @@ class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
         menuInflater.inflate(R.menu.search_menu, menu)
         val searchItem = menu?.findItem(R.id.itemSearch)
         val searchView = searchItem?.actionView as SearchView
-        searchView.setOnQueryTextListener(this)
+        QueryText().registerSearchView(searchView).setCallBack(this)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -52,17 +54,11 @@ class MainActivity: AppCompatActivity(), SearchView.OnQueryTextListener
         return viewModel.controller
     }
 
-    //TODO OnQueryTextListener
     override fun onQueryTextSubmit(query: String?): Boolean
     {
         query?.let {
             viewModel.onQuerySearch(DataHelper().parseSearchString(query))
         }
-        return false
-    }
-
-    override fun onQueryTextChange(query: String?): Boolean
-    {
         return false
     }
 }
