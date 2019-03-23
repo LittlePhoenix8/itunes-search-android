@@ -3,6 +3,9 @@ package cl.littlephoenix.itunessearch.fragments.detail
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.arch.lifecycle.ViewModelStores
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -23,12 +26,15 @@ import cl.littlephoenix.itunessearch.models.BaseResponse
 import cl.littlephoenix.itunessearch.models.response.DetailResponse
 import cl.littlephoenix.itunessearch.models.response.SongsResponse
 import kotlinx.android.synthetic.main.fragment_detail.*
+import java.lang.Exception
 
-class DetailFragment : Fragment(), OnSongSelectListener
+class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletionListener
 {
     private lateinit var viewModel: DetailViewModel
+    private var mediaPlayer: MediaPlayer? = null
     private val details = ArrayList<DetailResponse>()
     private val songs = ArrayList<SongsResponse>()
+    private var currentPlaying: Int = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -53,8 +59,17 @@ class DetailFragment : Fragment(), OnSongSelectListener
         initComponents()
     }
 
+    override fun onDetach()
+    {
+        super.onDetach()
+        mediaPlayer?.release()
+    }
+
     private fun initComponents()
     {
+        mediaPlayer = MediaPlayer()
+        mediaPlayer?.setAudioStreamType(AudioManager.STREAM_MUSIC)
+
         viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
         viewModel.getArtistDetail().observe(this, ArtistObserverResponse())
         viewModel.getArtistSongs().observe(this, SongsObserverResponse())
@@ -103,9 +118,57 @@ class DetailFragment : Fragment(), OnSongSelectListener
         }
     }
 
+    private fun prepareMediaWith(url: String)
+    {
+        try
+        {
+            mediaPlayer = MediaPlayer()
+            mediaPlayer?.setDataSource(url)
+            mediaPlayer?.prepare()
+            mediaPlayer?.start()
+
+            showProgressBar(false)
+            mediaPlayer?.setOnCompletionListener(this)
+        }
+        catch(e: Exception)
+        {
+            e.printStackTrace()
+            //showToastMessage(getString(R.string.error_play))
+        }
+    }
+
     override fun playSongAt(position: Int)
     {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        showProgressBar(true)
+        mediaPlayer?.let {
+            if(!it.isPlaying)
+            {
+                //TODO play
+                currentPlaying = position
+                prepareMediaWith(songs[position].previewUrl)
+            }
+            else
+            {
+                if(currentPlaying == position)
+                {
+                    //TODO stop
+                    it.pause()
+                    currentPlaying = -1
+                }
+                else
+                {
+                    //TODO stop & change song
+                    it.stop()
+                    currentPlaying = position
+                    prepareMediaWith(songs[position].previewUrl)
+                }
+            }
+        }
+    }
+
+    override fun onCompletion(mediaPlayer: MediaPlayer?)
+    {
+        //TODO play next?
     }
 
     inner class ArtistObserverResponse: Observer<BaseResponse<DetailResponse>>

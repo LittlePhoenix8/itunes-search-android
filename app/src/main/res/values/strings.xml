@@ -7,4 +7,5 @@
     <string name="albums">Albums</string>
     <string name="play_button">Play button</string>
     <string name="songs">Songs</string>
+    <string name="error_play">Error playing song</string>
 </resources>
