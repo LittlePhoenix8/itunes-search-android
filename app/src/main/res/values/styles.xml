@@ -1,11 +1,45 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ArtistType">
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ArtistName">
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ArtistGenre">
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="SongsName">
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SongsAlbum">
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="MediaButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:tint">@android:color/white</item>
     </style>
 
 </resources>
