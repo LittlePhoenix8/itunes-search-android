@@ -43,7 +43,8 @@ class DetailViewModel: BaseViewModel()
 
     inner class ArtistDetailResponse: Callback<BaseResponse<DetailResponse>>
     {
-        override fun onResponse(call: Call<BaseResponse<DetailResponse>>, response: Response<BaseResponse<DetailResponse>>)
+        override fun onResponse(call: Call<BaseResponse<DetailResponse>>,
+                                response: Response<BaseResponse<DetailResponse>>)
         {
             if(response.isSuccessful && response.body() != null)
             {
@@ -63,7 +64,8 @@ class DetailViewModel: BaseViewModel()
 
     inner class ArtistSongsResponse: Callback<BaseResponse<SongsResponse>>
     {
-        override fun onResponse(call: Call<BaseResponse<SongsResponse>>, response: Response<BaseResponse<SongsResponse>>)
+        override fun onResponse(call: Call<BaseResponse<SongsResponse>>,
+                                response: Response<BaseResponse<SongsResponse>>)
         {
             if(response.isSuccessful && response.body() != null)
             {

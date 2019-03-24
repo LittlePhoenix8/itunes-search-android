@@ -27,7 +27,6 @@ class QueryText
             {
                 return false
             }
-
         })
         return this
     }

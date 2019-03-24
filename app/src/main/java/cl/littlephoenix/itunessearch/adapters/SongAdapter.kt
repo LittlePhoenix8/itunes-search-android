@@ -13,7 +13,8 @@ import cl.littlephoenix.itunessearch.interfaces.OnSongSelectListener
 import cl.littlephoenix.itunessearch.models.response.SongsResponse
 import com.bumptech.glide.Glide
 
-class SongAdapter(private val songs: ArrayList<SongsResponse>, private val onSongSelectListener: OnSongSelectListener): RecyclerView.Adapter<SongAdapter.SongHolder>()
+class SongAdapter(private val songs: ArrayList<SongsResponse>,
+                  private val onSongSelectListener: OnSongSelectListener): RecyclerView.Adapter<SongAdapter.SongHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongHolder
     {

@@ -18,7 +18,8 @@ interface ItunesNetwork
 
     @Headers("Content-Type:application/json")
     @GET("search")
-    fun getArtistByName(@Query("term") id:String, @Query("entity") entity: String): Call<BaseResponse<ArtistResponse>>
+    fun getArtistByName(@Query("term") id:String,
+                        @Query("entity") entity: String): Call<BaseResponse<ArtistResponse>>
 
     @Headers("Content-Type:application/json")
     @GET("lookup")

@@ -30,8 +30,7 @@ import java.lang.Exception
 import android.media.AudioAttributes
 import android.os.Build
 
-class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletionListener,
-                       View.OnClickListener
+class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletionListener, View.OnClickListener
 {
     private lateinit var viewModel: DetailViewModel
     private var mediaPlayer: MediaPlayer? = null
@@ -68,26 +67,10 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
         mediaPlayer?.release()
     }
 
-    @Suppress("DEPRECATION")
     private fun initComponents()
     {
-        mediaPlayer = MediaPlayer()
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            val aa = AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_MEDIA)
-                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build()
-            mediaPlayer?.setAudioAttributes(aa)
-        }
-        else
-        {
-            mediaPlayer?.setAudioStreamType(AudioManager.STREAM_MUSIC)
-        }
-
-        viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
-        viewModel.getArtistDetail().observe(this, ArtistObserverResponse())
-        viewModel.getArtistSongs().observe(this, SongsObserverResponse())
-        viewModel.getError().observe(this, ErrorObserverResponse())
+        initViewModel()
+        initMediaPlayer()
 
         recyclerDetails.layoutManager = LinearLayoutManager(context, OrientationHelper.HORIZONTAL, false)
         recyclerDetails.adapter = DetailAdapter(details)
@@ -101,6 +84,36 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
         btnNext.setOnClickListener(this)
         btnStop.setOnClickListener(this)
 
+        searchDefaultArtist()
+    }
+
+    private fun initViewModel()
+    {
+        viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
+        viewModel.getArtistDetail().observe(this, ArtistObserverResponse())
+        viewModel.getArtistSongs().observe(this, SongsObserverResponse())
+        viewModel.getError().observe(this, ErrorObserverResponse())
+    }
+
+    @Suppress("DEPRECATION")
+    private fun initMediaPlayer()
+    {
+        mediaPlayer = MediaPlayer()
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            val aa = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build()
+            mediaPlayer?.setAudioAttributes(aa)
+        }
+        else
+        {
+            mediaPlayer?.setAudioStreamType(AudioManager.STREAM_MUSIC)
+        }
+    }
+
+    private fun searchDefaultArtist()
+    {
         val idArtist = arguments?.getString("id_artist")
         idArtist?.let {
             showProgressBar(true)
@@ -241,7 +254,6 @@ class DetailFragment : Fragment(), OnSongSelectListener, MediaPlayer.OnCompletio
 
     override fun onCompletion(mediaPlayer: MediaPlayer?)
     {
-        //showPlayer(false)
         if(currentPlaying < songs.size - 1)
         {
             setSelected(currentPlaying, currentPlaying + 1)

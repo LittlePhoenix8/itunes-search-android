@@ -6,4 +6,8 @@
     <string name="album_cover">Album cover</string>
     <string name="albums">Albums</string>
     <string name="songs">Songs</string>
+    <string name="previous_button">Previous button</string>
+    <string name="play_pause">Play and pause button</string>
+    <string name="next_button">Next button</string>
+    <string name="stop">Stop button</string>
 </resources>
